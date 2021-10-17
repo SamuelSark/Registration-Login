@@ -8,7 +8,6 @@ session_start();
 	$requestMethod = strtoupper(getenv('REQUEST_METHOD'));
 	$httpMethods = array('GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'OPTIONS');
 
-	//if($_SERVER['REQUEST_METHOD'] == "POST")
 	if (in_array($requestMethod, $httpMethods)) 
 
 	{
@@ -49,7 +48,7 @@ session_start();
 
 						$_SESSION['username'] = $user_data['username'];
 						header("Location: index.php");
-						die;
+						exit;
 					}
 
 				}
@@ -80,39 +79,41 @@ session_start();
 
 	<style type="text/css">
 	
-	#text{
-
-		height: 20px;
-		border-radius: 5px;
-		padding: 4px;
-		border: solid thin #aaa;
-		width: 100%;
-	}
-
 	#button{
-
 	padding: 10px;
-	width: 100px;
+	height: 40px;
+	width: 80px;
 	color: white;
 	background-color: blue;
 	border: none;
 	}
+	#text{
+	height: 20px;
+	padding: 4px;
+	border: solid thin #aaa;
+	width: 100%;
+	border-radius: 5px;
 
+	}
 	#box{
-
 	background-color: lightgreen;
+	display: flex;
 	margin: auto;
-	width: 300px;
+	width: 200px;
 	padding: 20px;
 	}
-
+	#title{
+		font-size: 20px;
+		margin: 10px;
+		color: blue;"
+	}
 
 	</style>
 
 	<div id="box">
-		
+
 		<form method="post">
-			<div style="font-size: 20px;margin: 10px;color: white;">Login</div>
+			<div id = "title">Login</div>
 
             <label for="username">username:</label>
 			<input id="text" type="text" name="username">

@@ -19,7 +19,7 @@ session_start();
 			$query = "insert into user (username,password,firstName,lastName,email) values ('$username','$password', '$firstName', '$lastName', '$email')";
 			mysqli_query($con, $query);
 			header("Location: login.php");
-			die;
+			exit;
 		}
 		else
 		{
@@ -38,30 +38,33 @@ session_start();
 
 	<style type="text/css">
 	
-	#text{
-
-		height: 20px;
-		border-radius: 15px;
-		padding: 2px;
-		border: solid thin #aaa;
-		width: 100%;
-	}
-
 	#button{
-
-		padding: 10px;
-		width: 100px;
-		color: white;
-		background-color: blue;
-		border: none;
+	padding: 10px;
+	height: 40px;
+	width: 80px;
+	color: white;
+	background-color: blue;
+	border: none;
 	}
+	#text{
+	height: 20px;
+	padding: 4px;
+	border: solid thin #aaa;
+	width: 100%;
+	border-radius: 5px;
 
+	}
 	#box{
-
-		background-color: lightgreen;
-		margin: auto;
-		width: 300px;
-		padding: 20px;
+	background-color: lightgreen;
+	display: flex;
+	margin: auto;
+	width: 200px;
+	padding: 20px;
+	}
+	#title{
+		font-size: 20px;
+		margin: 10px;
+		color: blue;"
 	}
 
 	</style>
@@ -69,8 +72,9 @@ session_start();
 	<div id="box">
 		
 		<form method="post">
-			<div style="font-size: 20px;margin: 10px;color: white;">Signup</div>
-            <label for="username">username:</label>
+			<div id = "title">Signup</div>
+            
+			<label for="username">username:</label>
 			<input id="text" type="text" name="username"><br><br>
 
             <label for="password">password:</label>
