@@ -6,25 +6,32 @@ session_start();
 
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
-		$username = $_POST['username'];
-		$password = $_POST['password'];
-        $firstName = $_POST['firstName'];
-        $lastName = $_POST['lastName'];
-        $email = $_POST['email'];
-		$passwordconfirmed = $_POST['passwordconfirmed'];
+		//input user given info for registration while preventing sql injection
+		$username = mysqli_real_escape_string($con, $_POST['username']);
+		$password = mysqli_real_escape_string($con,$_POST['password']);
+        $firstName = mysqli_real_escape_string($con,$_POST['firstName']);
+        $lastName = mysqli_real_escape_string($con,$_POST['lastName']);
+        $email = mysqli_real_escape_string($con,$_POST['email']);
+		$passwordconfirmed = mysqli_real_escape_string($con,$_POST['passwordconfirmed']);
 
-
-		if(!empty($username) && !empty($password) && !empty($passwordconfirmed)&& !empty($firstName) && !empty($lastName) && !empty($email) && !is_numeric($username))
-		{
-			$query = "insert into user (username,password,firstName,lastName,email) values ('$username','$password', '$firstName', '$lastName', '$email')";
-			mysqli_query($con, $query);
+		if(!empty($username) && !empty($password) && !empty($passwordconfirmed)&& !empty($firstName) && !empty($lastName) && !empty($email)){
+			$sql = "INSERT INTO user (username,password,firstName,lastName,email) VALUES (?, ?, ?, ?, ?);";
+			$stmt = mysqli_stmt_init($con);
+			if(!mysqli_stmt_prepare($stmt, $sql)){
+				echo("issue...");
+			}
+			else{
+				mysqli_stmt_bind_param($stmt, "sssss", $username, $password, $firstName, $lastName, $email);
+				mysqli_stmt_execute($stmt);
+			}
 			header("Location: login.php");
 			exit;
 		}
 		else
 		{
-			echo "Please enter some valid information!";
+			echo "Empty slot for user input, please fill in!";
 		}
+		
 	}
 ?>
 
