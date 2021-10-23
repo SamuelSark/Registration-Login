@@ -1,1 +1,3 @@
-INSERT INTO `user` VALUES ('a1b','a1b','ab1','a1b','ab1'),('a1bc22','a1bc22','abc122','abc122','ab1c22');
+INSERT INTO `user` VALUES ('12379','12379','12379','12379','12379'),('12ww34215','12ww34215','12ww34215','12ww34215','12ww34215');
+create table  school_records (id INT, student_name varchar(20), class varchar(45), teacher varchar(45),grade varchar(20), primary key (id) );
+	INSERT INTO `school_records` VALUES (11,'ab','ab','ab','ab'),(22,'abc22','abc22','abc22','abc22');

@@ -20,5 +20,10 @@ session_start();
 
 	<br>
 	Hello, <?php echo $user_data['username']; ?>
+
+	<br></br>
+
+	<input type="button" value="initialization" onclick="location='initialize_database.php'" />
+
 </body>
 </html>
