@@ -6,25 +6,68 @@ session_start();
 
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
-		$username = $_POST['username'];
-		$password = $_POST['password'];
-        $firstName = $_POST['firstName'];
-        $lastName = $_POST['lastName'];
-        $email = $_POST['email'];
-		$passwordconfirmed = $_POST['passwordconfirmed'];
+		//input user given info for registration while preventing sql injection
+		$username = mysqli_real_escape_string($con, $_POST['username']);
+		$password = mysqli_real_escape_string($con,$_POST['password']);
+        $firstName = mysqli_real_escape_string($con,$_POST['firstName']);
+        $lastName = mysqli_real_escape_string($con,$_POST['lastName']);
+        $email = mysqli_real_escape_string($con,$_POST['email']);
+		$passwordconfirmed = mysqli_real_escape_string($con,$_POST['passwordconfirmed']);
+
+		if(!empty($username) && !empty($password) && !empty($passwordconfirmed)&& !empty($firstName) && !empty($lastName) && !empty($email) && ($password == $passwordconfirmed)){
+			$sql = "INSERT INTO user (username,password,firstName,lastName,email) VALUES (?, ?, ?, ?, ?);";
+			$stmt = mysqli_stmt_init($con);
 
 
-		if(!empty($username) && !empty($password) && !empty($passwordconfirmed)&& !empty($firstName) && !empty($lastName) && !empty($email) && !is_numeric($username))
-		{
-			$query = "insert into user (username,password,firstName,lastName,email) values ('$username','$password', '$firstName', '$lastName', '$email')";
-			mysqli_query($con, $query);
-			header("Location: login.php");
-			die;
+			if(!mysqli_stmt_prepare($stmt, $sql)){
+				echo("issue...");
+			} 
+			else{
+				$q_username = "SELECT username  FROM user WHERE username ='$username' ";
+				$result_username = mysqli_query($con,$q_username);
+				$num_rows_username = mysqli_num_rows($result_username);
+
+				$q_email = "SELECT  email FROM user WHERE  email = '$email'";
+				$result_email = mysqli_query($con,$q_email);
+				$num_rows_email = mysqli_num_rows($result_email);
+
+				// check for duplicates in database
+				if(!$num_rows_username && !$num_rows_email)
+				{
+				//save to database
+				
+				mysqli_stmt_bind_param($stmt, "sssss", $username, $password, $firstName, $lastName, $email);
+				mysqli_stmt_execute($stmt);
+				header("Location: login.php");
+				die;
+				}
+
+				elseif($num_rows_username && $num_rows_email)
+				{
+					echo" Duplicate email and username please try again";
+				}
+
+				elseif($num_rows_username)
+				{
+					echo" Duplicate username please try again";
+				}
+
+				elseif($num_rows_email)
+				{
+					echo" Duplicate email please try again";
+				}
+
+
+				
+			}
+
+		
 		}
 		else
 		{
-			echo "Please enter some valid information!";
+			echo "Empty slot for user input, please fill in!";
 		}
+		
 	}
 ?>
 
@@ -38,30 +81,33 @@ session_start();
 
 	<style type="text/css">
 	
-	#text{
-
-		height: 20px;
-		border-radius: 15px;
-		padding: 2px;
-		border: solid thin #aaa;
-		width: 100%;
-	}
-
 	#button{
-
-		padding: 10px;
-		width: 100px;
-		color: white;
-		background-color: blue;
-		border: none;
+	padding: 10px;
+	height: 40px;
+	width: 80px;
+	color: white;
+	background-color: blue;
+	border: none;
 	}
+	#text{
+	height: 20px;
+	padding: 4px;
+	border: solid thin #aaa;
+	width: 100%;
+	border-radius: 5px;
 
+	}
 	#box{
-
-		background-color: lightgreen;
-		margin: auto;
-		width: 300px;
-		padding: 20px;
+	background-color: lightgreen;
+	display: flex;
+	margin: auto;
+	width: 200px;
+	padding: 20px;
+	}
+	#title{
+		font-size: 20px;
+		margin: 10px;
+		color: blue;"
 	}
 
 	</style>
@@ -69,8 +115,9 @@ session_start();
 	<div id="box">
 		
 		<form method="post">
-			<div style="font-size: 20px;margin: 10px;color: white;">Signup</div>
-            <label for="username">username:</label>
+			<div id = "title">Signup</div>
+            
+			<label for="username">username:</label>
 			<input id="text" type="text" name="username"><br><br>
 
             <label for="password">password:</label>
