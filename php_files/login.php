@@ -13,7 +13,6 @@ session_start();
 	{
 		if ($requestMethod == 'POST') {
 
-		echo ("testing_1");
 
 		$username = $_POST['username'];
 		$password = $_POST['password'];
@@ -21,30 +20,24 @@ session_start();
         $lastName = $_POST['lastName'];
 		$email = $_POST['email'];
 
-		echo ("testing_2");
 
 		if(!empty($username) && !empty($password) && !empty($firstName) && !empty($lastName) && !empty($email) && !is_numeric($username))
 		{
-			echo ("testing_3");
 
 			$query = "select * from user where username = '$username' limit 1";
 			$result = mysqli_query($con, $query);
-			echo ("testing_4");
 
 
 			if($result)
 			{
-				echo ("one");
 
 				if($result && mysqli_num_rows($result) > 0)
 				{
-					echo ("two");
 
 					$user_data = mysqli_fetch_assoc($result);
 					
 					if(($user_data['password'] === $password) && ($user_data['firstName'] === $firstName) && ($user_data['lastName'] === $lastName) && ($user_data['email'] === $email))
 					{
-						echo ("three");
 
 						$_SESSION['username'] = $user_data['username'];
 						header("Location: index.php");

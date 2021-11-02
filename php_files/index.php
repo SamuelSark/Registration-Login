@@ -19,7 +19,7 @@ session_start();
 	<h1>This is the index page</h1>
 
 	<br>
-	Hello, <?php echo $user_data['username']; ?>
+	Hello, <?php echo $user_data['firstName']; ?>
 
 	<br></br>
 
